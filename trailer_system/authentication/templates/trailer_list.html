@@ -1,0 +1,117 @@
+<!-- authentication/templates/trailer_list.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Trailer List{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Trailer List</h1>
+    <a href="{% url 'main-dashboard' %}" class="btn btn-secondary mb-3">← Back to Dashboard</a>
+
+    <!-- Filters -->
+    <form method="get" class="mb-3">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="status">Filter by Status:</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All</option>
+                    <option value="Available" {% if status_filter == 'Available' %}selected{% endif %}>Available</option>
+                    <option value="In Transit" {% if status_filter == 'In Transit' %}selected{% endif %}>In Transit</option>
+                    <option value="Rented" {% if status_filter == 'Rented' %}selected{% endif %}>Rented</option>
+                    <option value="In Yard" {% if status_filter == 'In Yard' %}selected{% endif %}>In Yard</option>
+
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="rent_due">Filter by Rent Due:</label>
+                <select id="rent_due" name="rent_due" class="form-control">
+                    <option value="all" {% if rent_due_filter == 'all' %}selected{% endif %}>All</option>
+                    <option value="asc" {% if rent_due_filter == 'asc' %}selected{% endif %}>Earliest Due First</option>
+                    <option value="desc" {% if rent_due_filter == 'desc' %}selected{% endif %}>Latest Due First</option>
+                    <option value="15_days" {% if rent_due_filter == '15_days' %}selected{% endif %}>Within 15 Days</option>
+                    <option value="1_month" {% if rent_due_filter == '1_month' %}selected{% endif %}>Within or Equal to 1 Month</option>
+                    <option value="3_months" {% if rent_due_filter == '3_months' %}selected{% endif %}>Within or Equal to 3 Months</option>
+                    <option value="6_months" {% if rent_due_filter == '6_months' %}selected{% endif %}>Within or Equal to 6 Months</option>
+                    <option value="greater_6_months" {% if rent_due_filter == 'greater_6_months' %}selected{% endif %}>Greater than 6 Months</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <a href="{% url 'trailer-list' %}" class="btn btn-secondary ms-2">Clear Filters</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Search -->
+    <form method="get" class="mb-3">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="search">Search by Name:</label>
+                <input id="search" type="text" name="search" class="form-control" value="{{ search_query }}">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Trailer Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Rented By</th>
+                <th>Rent Due</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trailer in trailers %}
+                <tr>
+                    <td>{{ trailer.name }}</td>
+                    <td>{{ trailer.status }}</td>
+                    <td>{{ trailer.rented_by }}</td>
+                    <td>
+                        <span style="color: {% if trailer.rent_due < today %}red{% endif %}">
+                            {{ trailer.rent_due|date:"M d, Y" }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'edit-trailer' trailer.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete-trailer' trailer.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No trailers found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if trailers.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ trailers.previous_page_number }}&status={{ status_filter }}&rent_due={{ rent_due_filter }}&search={{ search_query }}&sort_rent={{ sort_rent }}">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            {% endif %}
+
+            <li class="page-item disabled"><span class="page-link">Page {{ trailers.number }} of {{ trailers.paginator.num_pages }}</span></li>
+
+            {% if trailers.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ trailers.next_page_number }}&status={{ status_filter }}&rent_due={{ rent_due_filter }}&search={{ search_query }}&sort_rent={{ sort_rent }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

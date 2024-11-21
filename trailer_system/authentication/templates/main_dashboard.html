@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!-- authentication/templates/main_dashboard.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4 text-center">Welcome, {{ user.username }}!</h1>
+    <p class="lead text-center">Manage trailers, rentals, and maintenance tasks from here.</p>
+    
+    <!-- Stacked Buttons -->
+    <div class="d-grid gap-3 col-6 mx-auto mt-5">
+        <a href="{% url 'trailer-list' %}" class="btn btn-primary btn-lg">View Trailers</a>
+        <a href="{% url 'add-trailer' %}" class="btn btn-success btn-lg">Add New Trailer</a>
+    </div>
+<!-- Add the image -->
+<div class="text-center mt-5">
+    <img src="{% static 'images/truck2.jpg' %}" alt="Truck Image" class="img-fluid" style="max-width: 400px;">
+</div>
+{% endblock %}

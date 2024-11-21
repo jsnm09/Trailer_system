@@ -1,0 +1,42 @@
+<!-- authentication/templates/add_trailer.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add New Trailer{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <a href="{% url 'trailer-list' %}" class="btn btn-secondary mb-3">Back to Trailer List</a>
+
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Add New Trailer</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input id="name" name="name" type="text" class="form-control" placeholder="Enter trailer name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status:</label>
+                    <select id="status" name="status" class="form-select" required>
+                        <option value="" disabled selected>Select status</option>
+                        <option value="Available">Available</option>
+                        <option value="In Transit">In Transit</option>
+                        <option value="In Yard">In Yard</option>
+                        <option value="Rented">Rented</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="rented_by" class="form-label">Rented By:</label>
+                    <input id="rented_by" name="rented_by" type="text" class="form-control" placeholder="Enter renter's name (if any)">
+                </div>
+                <div class="mb-3">
+                    <label for="rent_due" class="form-label">Rent Due:</label>
+                    <input id="rent_due" name="rent_due" type="date" class="form-control" placeholder="Select rent due date">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Add Trailer</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

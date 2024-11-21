@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Login</h2>
+    <form method="post" class="mt-4 mx-auto" style="max-width: 400px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger mt-3" role="alert">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+</div>
+<!-- Add the image -->
+<div class="text-center mt-5">
+    <img src="{% static 'images/truck2.jpg' %}" alt="Truck Image" class="img-fluid" style="max-width: 400px;">
+</div>
+{% endblock %}

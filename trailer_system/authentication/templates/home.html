@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="card shadow p-5 bg-light border border-secondary rounded">
+        <h1 class="display-4">Welcome to the Trailer Management System</h1>
+        <p class="lead text-secondary">Manage your trailers efficiently and effectively.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Login</a>
+    </div>
+
+<!-- Add the image -->
+<div class="text-center mt-5">
+    <img src="{% static 'images/truck2.jpg' %}" alt="Truck Image" class="img-fluid" style="max-width: 400px;">
+</div>
+{% endblock %}

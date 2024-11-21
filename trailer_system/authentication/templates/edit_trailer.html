@@ -1,0 +1,42 @@
+<!-- authentication/templates/edit_trailer.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Edit Trailer{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <a href="{% url 'trailer-list' %}" class="btn btn-secondary mb-3">Back to Trailer List</a>
+
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Edit Trailer - {{ trailer.name }}</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input id="name" name="name" type="text" class="form-control" value="{{ trailer.name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status:</label>
+                    <select id="status" name="status" class="form-select" required>
+                        <option value="Available" {% if trailer.status == "Available" %}selected{% endif %}>Available</option>
+                        <option value="In Transit" {% if trailer.status == "In Transit" %}selected{% endif %}>In Transit</option>
+                        <option value="In Yard" {% if trailer.status == "In Yard" %}selected{% endif %}>In Yard</option>
+                        <option value="Rented" {% if trailer.status == "Rented" %}selected{% endif %}>Rented</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="rented_by" class="form-label">Rented By:</label>
+                    <input id="rented_by" name="rented_by" type="text" class="form-control" value="{{ trailer.rented_by }}">
+                </div>
+                <div class="mb-3">
+                    <label for="rent_due" class="form-label">Rent Due:</label>
+                    <input id="rent_due" name="rent_due" type="date" class="form-control" value="{{ trailer.rent_due|date:"Y-m-d" }}">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

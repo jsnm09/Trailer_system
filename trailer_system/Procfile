@@ -1,0 +1,1 @@
+web: gunicorn TRAILER_SYSTEM.wsgi --log-file -
